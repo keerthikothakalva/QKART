@@ -9,7 +9,15 @@ import Header from "./Header";
 import "./Register.css";
 
 const Register = () => {
+  const [variantInput]=useState();
+  const[isLoading, setIsloading]=useState();
   const { enqueueSnackbar } = useSnackbar();
+  const[formData,setFormData]=useState({
+  username:"",
+  password:"",
+  confirmPassword:""
+  })
+
 
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
@@ -35,7 +43,33 @@ const Register = () => {
    *      "message": "Username is already taken"
    * }
    */
-  const register = async (formData) => {
+  const res = async (formData) => {
+    try{
+       setIsloading(true);
+      if(variantInput(formData)){
+      let res=await axios.post(`${config.endpoint}/auth/register`,{
+        username:formData.username,
+        password:formData.password,
+      });
+      if(res.status>=200 && res.status<=299 ){
+         enqueueSnackbar("Registered Successfully",{variant:"success"})
+      }
+    }
+  
+      if(res.status===400){
+        enqueueSnackbar(res.error)
+      }
+    
+  }
+      catch(err){
+        console.log(err,"err")
+          enqueueSnackbar("something went wrong.check that the backend is running, reachable and and returns valid JSON.",{variant:"error"})
+       
+    }
+      finally{
+        setIsloading(false)
+      }
+    
   };
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
@@ -56,8 +90,36 @@ const Register = () => {
    * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"
    * -    Check that confirmPassword field has the same value as password field - Passwords do not match
    */
-  const validateInput = (data) => {
+  const valiantInput = (data) => {
+    if(!data.username){
+      enqueueSnackbar("username is a required field",{variant:"warning"})
+      return false
+    }
+    if(!data.password){
+      enqueueSnackbar("Password is a required field",{variant:"warning"})
+      return false
+    }
+    if(!data.username.length<6){
+      enqueueSnackbar("Username must be at least 6 characters",{variant:"warning"})
+      return false
+    }
+    if(!data.password.length<6){
+      enqueueSnackbar("Password must be at least 6 characters",{variant:"warning"})
+      return false
+    }
+    
+    if(!data.confirmPassword){
+      enqueueSnackbar("Passwords do not match",{variant:"warning"})
+      return false
+    }
+    return true
+
+    
+    
   };
+  const handlechange=(e)=>{
+    setFormData(()=>({...formData,[e.target.name]:e.target.value}))
+  }
 
   return (
     <Box
@@ -76,6 +138,8 @@ const Register = () => {
             variant="outlined"
             title="Username"
             name="username"
+            value={formData.username}
+            onchange={(e)=>handlechange(e)}
             placeholder="Enter Username"
             fullWidth
           />
@@ -84,6 +148,8 @@ const Register = () => {
             variant="outlined"
             label="Password"
             name="password"
+            value={formData.password}
+            onchange={(e)=>handlechange(e)}
             type="password"
             helperText="Password must be atleast 6 characters length"
             fullWidth
@@ -94,17 +160,16 @@ const Register = () => {
             variant="outlined"
             label="Confirm Password"
             name="confirmPassword"
+            value={formData.confirmPassword}
+            onchange={(e)=>handlechange(e)}
             type="password"
             fullWidth
           />
-           <Button className="button" variant="contained">
-            Register Now
-           </Button>
+          <Box sx={{display:"flex",justifyContent:"center"}}>
+          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>Register(formData)}>Register</button>}
+          </Box>
           <p className="secondary-action">
             Already have an account?{" "}
-             <a className="link" href="#">
-              Login here
-             </a>
           </p>
         </Stack>
       </Box>
