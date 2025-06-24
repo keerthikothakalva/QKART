@@ -90,7 +90,7 @@ const Register = () => {
    * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"
    * -    Check that confirmPassword field has the same value as password field - Passwords do not match
    */
-  const valiantInput = (data) => {
+  const validateInput = (data) => {
     if(!data.username){
       enqueueSnackbar("username is a required field",{variant:"warning"})
       return false
