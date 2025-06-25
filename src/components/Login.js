@@ -38,6 +38,27 @@ const Login = () => {
    *
    */
   const login = async (formData) => {
+    try{
+      setIsloading(true);
+      if (!validateInput(formData)) return;
+     let res=await axios.post(`${config.endpoint}/auth/register`,{
+       username:formData.username,
+       password:formData.password,
+     });
+        enqueueSnackbar("Logged in Successfully",{variant:"success"})
+     
+     history.push('/login'); 
+
+   
+ }
+     catch(err){
+       console.log(err,"err")
+         enqueueSnackbar("something went wrong.check that the backend is running, reachable and and returns valid JSON.",{variant:"error"})
+      
+   }
+     finally{
+       setIsloading(false)
+     }
   };
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Validate the input
@@ -87,6 +108,46 @@ const Login = () => {
       <Header hasHiddenAuthButtons />
       <Box className="content">
         <Stack spacing={2} className="form">
+          <h2 className="title">Register</h2>
+          <TextField
+            id="username"
+            label="Username"
+            variant="outlined"
+            title="Username"
+            name="username"
+            value={formData.username}
+            onChange={(e)=>handlechange(e)}
+            placeholder="Enter Username"
+            fullWidth
+          />
+          <TextField
+            id="password"
+            variant="outlined"
+            label="Password"
+            name="password"
+            value={formData.password}
+            onChange={(e)=>handlechange(e)}
+            type="password"
+            helperText="Password must be atleast 6 characters length"
+            fullWidth
+            placeholder="Enter a password with minimum 6 characters"
+          />
+          <TextField
+            id="confirmPassword"
+            variant="outlined"
+            label="Confirm Password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={(e)=>handlechange(e)}
+            type="password"
+            fullWidth
+          />
+          <Box sx={{display:"flex",justifyContent:"center"}}>
+          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>res(formData)}>Register</button>}
+          </Box>
+          <p className="secondary-action">
+            Already have an account?{" "}
+          </p>
         </Stack>
       </Box>
       <Footer />

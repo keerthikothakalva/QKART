@@ -3,8 +3,14 @@ import { Avatar, Button, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
 import "./Header.css";
+import { useHistory } from "react-router-dom";
 
 const Header = ({ children, hasHiddenAuthButtons }) => {
+  const history = useHistory();
+  const backToExplore = () => {
+    history.push('/');
+  }
+
     return (
       <Box className="header">
         <Box className="header-title">
@@ -14,6 +20,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
           className="explore-button"
           startIcon={<ArrowBackIcon />}
           variant="text"
+          onClick={backToExplore}
         >
           Back to explore
         </Button>

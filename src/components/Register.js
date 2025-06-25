@@ -50,21 +50,15 @@ const Register = () => {
   const res = async (formData) => {
     try{
        setIsloading(true);
-      if(validateInput(formData)){
+       if (!validateInput(formData)) return;
       let res=await axios.post(`${config.endpoint}/auth/register`,{
         username:formData.username,
         password:formData.password,
       });
-      // if(res.status>=200 && res.status<=299 ){
          enqueueSnackbar("Registered Successfully",{variant:"success"})
-      // }
+      
       history.push('/login'); 
 
-    }
-  
-      // if(res.status===400){
-      //   enqueueSnackbar(res.error)
-      // }
     
   }
       catch(err){
@@ -128,7 +122,6 @@ const Register = () => {
 
     return true;
 
-    // return true;
   };
   const handlechange=(e)=>{
     setFormData(()=>({...formData,[e.target.name]:e.target.value}))
@@ -183,6 +176,9 @@ const Register = () => {
           </Box>
           <p className="secondary-action">
             Already have an account?{" "}
+            <a className="link" href="/login">
+              Login here
+            </a>
           </p>
         </Stack>
       </Box>
