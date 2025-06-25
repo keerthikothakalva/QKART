@@ -7,6 +7,8 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
+import { useHistory } from "react-router-dom";
+
 
 const Register = () => {
   const [variantInput]=useState();
@@ -17,6 +19,8 @@ const Register = () => {
   password:"",
   confirmPassword:""
   })
+  const history = useHistory();
+
 
 
 
@@ -54,6 +58,8 @@ const Register = () => {
       if(res.status>=200 && res.status<=299 ){
          enqueueSnackbar("Registered Successfully",{variant:"success"})
       }
+      history.push('/login'); 
+
     }
   
       if(res.status===400){
