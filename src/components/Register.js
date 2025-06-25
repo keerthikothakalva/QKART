@@ -61,10 +61,15 @@ const Register = () => {
 
     
   }
-      catch(err){
-        console.log(err,"err")
-          enqueueSnackbar("something went wrong.check that the backend is running, reachable and and returns valid JSON.",{variant:"error"})
-       
+      catch(e){
+        if (e.response && e.response.status === 400) {
+          return enqueueSnackbar(e.response.data.message, { variant: "error" });
+        } else {
+          enqueueSnackbar(
+            "Something went wrong. check that the backend is running, reachable and return valid JSON.",
+            { variant: "error" }
+          );
+        }
     }
       finally{
         setIsloading(false)
