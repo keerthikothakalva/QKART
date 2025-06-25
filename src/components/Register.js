@@ -50,21 +50,21 @@ const Register = () => {
   const res = async (formData) => {
     try{
        setIsloading(true);
-      if(variantInput(formData)){
+      if(validateInput(formData)){
       let res=await axios.post(`${config.endpoint}/auth/register`,{
         username:formData.username,
         password:formData.password,
       });
-      if(res.status>=200 && res.status<=299 ){
+      // if(res.status>=200 && res.status<=299 ){
          enqueueSnackbar("Registered Successfully",{variant:"success"})
-      }
+      // }
       history.push('/login'); 
 
     }
   
-      if(res.status===400){
-        enqueueSnackbar(res.error)
-      }
+      // if(res.status===400){
+      //   enqueueSnackbar(res.error)
+      // }
     
   }
       catch(err){
@@ -96,32 +96,39 @@ const Register = () => {
    * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"
    * -    Check that confirmPassword field has the same value as password field - Passwords do not match
    */
-  const validateInput = (data) => {
-    if(!data.username){
-      enqueueSnackbar("username is a required field",{variant:"warning"})
-      return false
+   const validateInput = (data) => {
+    if (!data.username) {
+      enqueueSnackbar("Username is required field", { variant: "warning" });
+      return false;
     }
-    if(!data.password){
-      enqueueSnackbar("Password is a required field",{variant:"warning"})
-      return false
-    }
-    if(!data.username.length<6){
-      enqueueSnackbar("Username must be at least 6 characters",{variant:"warning"})
-      return false
-    }
-    if(!data.password.length<6){
-      enqueueSnackbar("Password must be at least 6 characters",{variant:"warning"})
-      return false
-    }
-    
-    if(!data.confirmPassword){
-      enqueueSnackbar("Passwords do not match",{variant:"warning"})
-      return false
-    }
-    return true
 
-    
-    
+    if (data.username.length < 6) {
+      enqueueSnackbar("Username must be atleast 6 characters", {
+        variant: "warning",
+      });
+      return false;
+    }
+
+    if (!data.password) {
+      enqueueSnackbar("Password is a required field", { variant: "warning" });
+      return false;
+    }
+
+    if (data.password.length < 6) {
+      enqueueSnackbar("Password must be atleast 6 characters", {
+        variant: "warning",
+      });
+      return false;
+    }
+
+    if (data.password !== data.confirmPassword) {
+      enqueueSnackbar("Password do not matched!!!", { variant: "warning" });
+      return false;
+    }
+
+    return true;
+
+    // return true;
   };
   const handlechange=(e)=>{
     setFormData(()=>({...formData,[e.target.name]:e.target.value}))
@@ -145,7 +152,7 @@ const Register = () => {
             title="Username"
             name="username"
             value={formData.username}
-            onchange={(e)=>handlechange(e)}
+            onChange={(e)=>handlechange(e)}
             placeholder="Enter Username"
             fullWidth
           />
@@ -155,7 +162,7 @@ const Register = () => {
             label="Password"
             name="password"
             value={formData.password}
-            onchange={(e)=>handlechange(e)}
+            onChange={(e)=>handlechange(e)}
             type="password"
             helperText="Password must be atleast 6 characters length"
             fullWidth
@@ -167,12 +174,12 @@ const Register = () => {
             label="Confirm Password"
             name="confirmPassword"
             value={formData.confirmPassword}
-            onchange={(e)=>handlechange(e)}
+            onChange={(e)=>handlechange(e)}
             type="password"
             fullWidth
           />
           <Box sx={{display:"flex",justifyContent:"center"}}>
-          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>Register(formData)}>Register</button>}
+          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>res(formData)}>Register</button>}
           </Box>
           <p className="secondary-action">
             Already have an account?{" "}
