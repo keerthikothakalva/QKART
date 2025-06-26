@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { SnackbarProvider } from "notistack";
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 // TODO: CRIO_TASK_MODULE_REGISTER - Add Target container ID (refer public/index.html)
 ReactDOM.render(
@@ -15,7 +16,8 @@ ReactDOM.render(
           }}
           preventDuplicate
         >
-          <App />
+          <BrowserRouter>  <App /> </BrowserRouter>
+         
         </SnackbarProvider>
   </React.StrictMode>,
    document.getElementById('root')

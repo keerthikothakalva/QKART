@@ -51,15 +51,13 @@ const Register = () => {
     try{
        setIsloading(true);
        if (!validateInput(formData)) return;
-      let res=await axios.post(`${config.endpoint}/auth/register`,{
+      let res=await axios.post(`${config.endpoint}/auth/login`,{
         username:formData.username,
         password:formData.password,
       });
          enqueueSnackbar("Registered Successfully",{variant:"success"})
       
       history.push('/login'); 
-
-    
   }
       catch(e){
         if (e.response && e.response.status === 400) {
@@ -142,7 +140,7 @@ const Register = () => {
       <Header hasHiddenAuthButtons />
       <Box className="content">
         <Stack spacing={2} className="form">
-          <h2 className="title">Register</h2>
+          <h2 className="title">Login</h2>
           <TextField
             id="username"
             label="Username"
@@ -177,13 +175,11 @@ const Register = () => {
             fullWidth
           />
           <Box sx={{display:"flex",justifyContent:"center"}}>
-          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>res(formData)}>Register</button>}
+          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>login(formData)}>Login</button>}
           </Box>
           <p className="secondary-action">
-            Already have an account?{" "}
-            <a className="link" href="/login">
-              Login here
-            </a>
+            Already have an account?
+            <link to="/login"> Login here</link>
           </p>
         </Stack>
       </Box>

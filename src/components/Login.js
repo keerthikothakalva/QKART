@@ -11,6 +11,12 @@ import "./Login.css";
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const[formData,setFormData]=useState({
+    username:"",
+    password:"",
+    })
+    const[isLoading, setIsloading]=useState(false);
+    const history=useHistory()
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Fetch the API response
   /**
@@ -45,20 +51,26 @@ const Login = () => {
        username:formData.username,
        password:formData.password,
      });
-        enqueueSnackbar("Logged in Successfully",{variant:"success"})
-     
-     history.push('/login'); 
-
-   
+     if(res.status>200&& res.status<=299){
+        enqueueSnackbar("Registered Successfully",{variant:"success"})
+     }
+     persistLogin({token:res.data.token, username:res.data.username,balance:res.data.balance}) 
+     history.push("/")
  }
-     catch(err){
-       console.log(err,"err")
-         enqueueSnackbar("something went wrong.check that the backend is running, reachable and and returns valid JSON.",{variant:"error"})
-      
+     catch(e){
+        if (e.response && e.response.status === 400) {
+          return enqueueSnackbar(e.response.data.message, { variant: "error" });
+        } else {
+         enqueueSnackbar(
+           "Something went wrong. check that the backend is running, reachable and return valid JSON.",
+           { variant: "error" }
+         );
    }
+  }
      finally{
        setIsloading(false)
      }
+
   };
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Validate the input
@@ -77,6 +89,17 @@ const Login = () => {
    * -    Check that password field is not an empty value - "Password is a required field"
    */
   const validateInput = (data) => {
+    if (!data.username) {
+      enqueueSnackbar("Username is required field", { variant: "warning" });
+      return false;
+    }
+    
+    if (!data.password) {
+      enqueueSnackbar("Password is a required field", { variant: "warning" });
+      return false;
+    }
+    return true;
+
   };
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Persist user's login information
@@ -96,7 +119,16 @@ const Login = () => {
    * -    `balance` field in localStorage can be used to store the balance amount in the user's wallet
    */
   const persistLogin = (token, username, balance) => {
+    localStorage.setItem("token",token)
+    localStorage.setItem("username",username)
+    localStorage.setItem("balance",balance)
+
+
   };
+  const handlechange=(e)=>{
+    setFormData(()=>({...formData,[e.target.name]:e.target.value}))
+  }
+
 
   return (
     <Box
@@ -146,7 +178,8 @@ const Login = () => {
           {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>res(formData)}>Register</button>}
           </Box>
           <p className="secondary-action">
-            Already have an account?{" "}
+            Dont have an account?
+            <link to="/register"> Register Now</link>
           </p>
         </Stack>
       </Box>

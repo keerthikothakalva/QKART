@@ -6,10 +6,14 @@ import "./Header.css";
 import { useHistory } from "react-router-dom";
 
 const Header = ({ children, hasHiddenAuthButtons }) => {
-  const history = useHistory();
-  const backToExplore = () => {
-    history.push('/');
+  const history= useHistory()
+
+  const handlelogout=()=>{
+    localstorage.clear();
+    window.location.reload()
+    history.push("/login")
   }
+  if(hasHiddenAuthButtons){
 
     return (
       <Box className="header">
@@ -26,6 +30,19 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
         </Button>
       </Box>
     );
+  }
+  return(
+    localStorage.getItem("username")?
+    <Stack direction={"row"} spacing={2} sx={{justifyContent:"flex-end", alignItems:"center"}}>
+    <Avatar src="avatar.png" alt="user-image"/>
+    <p> {localstorage.getItem("username")}</p>
+    <Button variant="contained" className="button" onClick={handlelogout}>Logout</Button>
+      </Stack>:
+    <Stack direction={"row"} spacing={2}>
+      <Button className="button" onClick={()=>history.push("/login")}>Login</Button>
+      <Button variant="contained" className="button" onClick={()=>history.push("/register")}>Register</Button>
+    </Stack>
+  )
 };
 
 export default Header;
