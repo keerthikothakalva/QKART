@@ -4,8 +4,6 @@ import Box from "@mui/material/Box";
 import React, { useState } from "react";
 import "./Header.css";
 import { useHistory } from "react-router-dom";
-const [localStorage]=useState();
-const backToExplore=useState();
 const Header = ({ children, hasHiddenAuthButtons }) => {
   const history= useHistory()
 

@@ -175,7 +175,7 @@ const Login = () => {
             fullWidth
           />
           <Box sx={{display:"flex",justifyContent:"center"}}>
-          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>register(formData)}>Register</button>}
+          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>res(formData)}>Register</button>}
           </Box>
           <p className="secondary-action">
             Dont have an account?
