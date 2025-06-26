@@ -20,6 +20,7 @@ const Register = () => {
   confirmPassword:""
   })
   const history = useHistory();
+  const login=useState();
 
 
 
