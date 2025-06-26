@@ -17,6 +17,7 @@ const Login = () => {
     })
     const[isLoading, setIsloading]=useState(false);
     const history=useHistory()
+    const [res]=useState();
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Fetch the API response
   /**
@@ -46,8 +47,9 @@ const Login = () => {
   const login = async (formData) => {
     try{
       setIsloading(true);
-      if (!validateInput(formData)) return;
-     let res=await axios.post(`${config.endpoint}/auth/register`,{
+      if (!validateInput(formData)) 
+      return;
+     let res=await axios.post(`${config.endpoint}/auth/login`,{
        username:formData.username,
        password:formData.password,
      });
@@ -58,8 +60,8 @@ const Login = () => {
      history.push("/")
  }
      catch(e){
-        if (e.response && e.response.status === 400) {
-          return enqueueSnackbar(e.response.data.message, { variant: "error" });
+        if (e.res && e.res.status === 400) {
+          return enqueueSnackbar(e.res.data.message, { variant: "error" });
         } else {
          enqueueSnackbar(
            "Something went wrong. check that the backend is running, reachable and return valid JSON.",

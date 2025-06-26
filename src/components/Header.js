@@ -6,6 +6,8 @@ import "./Header.css";
 import { useHistory } from "react-router-dom";
 const Header = ({ children, hasHiddenAuthButtons }) => {
   const history= useHistory()
+  const [localstorage]=useState()
+  const [backToExplore]=useState()
 
   const handlelogout=()=>{
     localstorage.clear();
