@@ -16,8 +16,7 @@ const Login = () => {
     password:"",
     })
     const[isLoading, setIsloading]=useState(false);
-    const history=useHistory()
-    const [res]=useState();
+    const history=useHistory();
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Fetch the API response
   /**
@@ -53,15 +52,15 @@ const Login = () => {
        username:formData.username,
        password:formData.password,
      });
-     if(res.status>200&& res.status<=299){
-        enqueueSnackbar("Registered Successfully",{variant:"success"})
+     if(res.status>200 && res.status<=300){
+        enqueueSnackbar("Logged in Successfully",{variant:"success"})
      }
-     persistLogin({token:res.data.token, username:res.data.username,balance:res.data.balance}) 
+     persistLogin(res.data.token, res.data.username,res.data.balance);
      history.push("/")
  }
      catch(e){
-        if (e.res && e.res.status === 400) {
-          return enqueueSnackbar(e.res.data.message, { variant: "error" });
+        if (e.response && e.response.status === 400) {
+          return enqueueSnackbar(e.response.data.message, { variant: "error" });
         } else {
          enqueueSnackbar(
            "Something went wrong. check that the backend is running, reachable and return valid JSON.",
@@ -92,7 +91,7 @@ const Login = () => {
    */
   const validateInput = (data) => {
     if (!data.username) {
-      enqueueSnackbar("Username is required field", { variant: "warning" });
+      enqueueSnackbar("Username is a required field", { variant: "warning" });
       return false;
     }
     
@@ -128,7 +127,7 @@ const Login = () => {
 
   };
   const handlechange=(e)=>{
-    setFormData(()=>({...formData,[e.target.name]:e.target.value}))
+    setFormData({...formData,[e.target.name]:e.target.value})
   }
 
 
@@ -142,7 +141,7 @@ const Login = () => {
       <Header hasHiddenAuthButtons />
       <Box className="content">
         <Stack spacing={2} className="form">
-          <h2 className="title">Register</h2>
+          <h2 className="title">Login</h2>
           <TextField
             id="username"
             label="Username"
@@ -166,22 +165,13 @@ const Login = () => {
             fullWidth
             placeholder="Enter a password with minimum 6 characters"
           />
-          <TextField
-            id="confirmPassword"
-            variant="outlined"
-            label="Confirm Password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={(e)=>handlechange(e)}
-            type="password"
-            fullWidth
-          />
+    
           <Box sx={{display:"flex",justifyContent:"center"}}>
-          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>res(formData)}>Register</button>}
+          {isLoading?<CircularProgress/>:<Button fullWidth className="button" variant="contained" onClick={()=>login(formData)}>Login to QKart</Button>}
           </Box>
           <p className="secondary-action">
             Dont have an account?
-            <link to="/register"> Register Now</link>
+            <Link to="/register"> Register Now</Link>
           </p>
         </Stack>
       </Box>

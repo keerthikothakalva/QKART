@@ -6,14 +6,21 @@ import "./Header.css";
 import { useHistory } from "react-router-dom";
 const Header = ({ children, hasHiddenAuthButtons }) => {
   const history= useHistory()
-  const [localstorage]=useState()
-  const [backToExplore]=useState()
 
+  const token=
+  typeof localstorage !=="undefined"?
+  localStorage.getItem("token"): null;
+  
   const handlelogout=()=>{
     localstorage.clear();
     window.location.reload()
     history.push("/login")
   }
+
+  const backToExplore=()=>{
+    history.push("/")
+  }
+
   if(hasHiddenAuthButtons){
 
     return (
@@ -32,7 +39,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
     );
   }
   return(
-    localStorage.getItem("username")?
+    localstorage.getItem("username")?
     <Stack direction={"row"} spacing={2} sx={{justifyContent:"flex-end", alignItems:"center"}}>
     <Avatar src="avatar.png" alt="user-image"/>
     <p> {localstorage.getItem("username")}</p>

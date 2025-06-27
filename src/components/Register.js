@@ -7,12 +7,12 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
-import { useHistory } from "react-router-dom";
+import { useHistory , Link } from "react-router-dom";
+
 
 
 const Register = () => {
-  const [variantInput]=useState();
-  const[isLoading, setIsloading]=useState();
+  const[isLoading, setIsloading]=useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const[formData,setFormData]=useState({
   username:"",
@@ -20,7 +20,7 @@ const Register = () => {
   confirmPassword:""
   })
   const history = useHistory();
-  const login=useState();
+  
 
 
 
@@ -48,7 +48,7 @@ const Register = () => {
    *      "message": "Username is already taken"
    * }
    */
-  const res = async (formData) => {
+  const handleRegister = async (formData) => {
     try{
        setIsloading(true);
        if (!validateInput(formData)) return;
@@ -96,7 +96,7 @@ const Register = () => {
    */
    const validateInput = (data) => {
     if (!data.username) {
-      enqueueSnackbar("Username is required field", { variant: "warning" });
+      enqueueSnackbar("Username is a required field", { variant: "warning" });
       return false;
     }
 
@@ -120,7 +120,7 @@ const Register = () => {
     }
 
     if (data.password !== data.confirmPassword) {
-      enqueueSnackbar("Password do not matched!!!", { variant: "warning" });
+      enqueueSnackbar("Passwords do not match!!!", { variant: "warning" });
       return false;
     }
 
@@ -128,7 +128,7 @@ const Register = () => {
 
   };
   const handlechange=(e)=>{
-    setFormData(()=>({...formData,[e.target.name]:e.target.value}))
+    setFormData({...formData,[e.target.name]:e.target.value})
   }
 
   return (
@@ -141,7 +141,7 @@ const Register = () => {
       <Header hasHiddenAuthButtons />
       <Box className="content">
         <Stack spacing={2} className="form">
-          <h2 className="title">Login</h2>
+          <h2 className="title">Register</h2>
           <TextField
             id="username"
             label="Username"
@@ -176,11 +176,11 @@ const Register = () => {
             fullWidth
           />
           <Box sx={{display:"flex",justifyContent:"center"}}>
-          {isLoading?<CircularProgress/>:<button fullWidth className="button" variant="contained" onClick={()=>login(formData)}>Login</button>}
+          {isLoading?<CircularProgress/>:<Button fullWidth className="button" variant="contained" onClick={()=>handleRegister(formData)}>Register</Button>}
           </Box>
           <p className="secondary-action">
             Already have an account?
-            <link to="/login"> Login here</link>
+            <Link to="/login"> Login here</Link>
           </p>
         </Stack>
       </Box>
