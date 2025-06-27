@@ -12,7 +12,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
   localStorage.getItem("token"): null;
   
   const handlelogout=()=>{
-    localstorage.clear();
+    localStorage.clear();
     window.location.reload()
     history.push("/login")
   }
@@ -39,10 +39,11 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
     );
   }
   return(
-    localstorage.getItem("username")?
+    localStorage.getItem("username")?
     <Stack direction={"row"} spacing={2} sx={{justifyContent:"flex-end", alignItems:"center"}}>
-    <Avatar src="avatar.png" alt="user-image"/>
-    <p> {localstorage.getItem("username")}</p>
+    <Avatar src="avatar.png" 
+    alt= {localStorage.getItem("username")}/>
+    <p>{localStorage.getItem("username")}</p>
     <Button variant="contained" className="button" onClick={handlelogout}>Logout</Button>
       </Stack>:
     <Stack direction={"row"} spacing={2}>
