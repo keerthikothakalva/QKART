@@ -15,7 +15,11 @@
 .header-title {
     cursor: pointer;
 }
-
+.search-bar{
+    flex-grow: 1;
+    max-width: 40%;
+    margin: 0 1rem;
+}
 .explore-button {
     color: #00a278 !important;
 }

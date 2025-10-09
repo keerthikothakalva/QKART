@@ -44,6 +44,7 @@ const Login = () => {
    *
    */
   const login = async (formData) => {
+ 
     try{
       setIsloading(true);
       if (!validateInput(formData)) 
@@ -54,9 +55,10 @@ const Login = () => {
      });
      if(res.status>200 && res.status<=300){
         enqueueSnackbar("Logged in Successfully",{variant:"success"})
-     }
+     
      persistLogin(res.data.token, res.data.username,res.data.balance);
-     history.push("/")
+     history.push("/");
+     }
  }
      catch(e){
         if (e.response && e.response.status === 400) {
@@ -67,14 +69,14 @@ const Login = () => {
            { variant: "error" }
          );
    }
-  }
-     finally{
-       setIsloading(false)
+  }finally{
+       setIsloading(false);
      }
-
-  };
+    };
 
   // TODO: CRIO_TASK_MODULE_LOGIN - Validate the input
+  
+
   /**
    * Validate the input values so that any bad or illegal values are not passed to the backend.
    *
@@ -89,7 +91,9 @@ const Login = () => {
    * -    Check that username field is not an empty value - "Username is a required field"
    * -    Check that password field is not an empty value - "Password is a required field"
    */
+
   const validateInput = (data) => {
+
     if (!data.username) {
       enqueueSnackbar("Username is a required field", { variant: "warning" });
       return false;
@@ -120,6 +124,7 @@ const Login = () => {
    * -    `balance` field in localStorage can be used to store the balance amount in the user's wallet
    */
   const persistLogin = (token, username, balance) => {
+
     localStorage.setItem("token",token)
     localStorage.setItem("username",username)
     localStorage.setItem("balance",balance)
@@ -128,9 +133,7 @@ const Login = () => {
   };
   const handlechange=(e)=>{
     setFormData({...formData,[e.target.name]:e.target.value})
-  }
-
-
+  };
   return (
     <Box
       display="flex"
@@ -177,7 +180,8 @@ const Login = () => {
       </Box>
       <Footer />
     </Box>
-  );
-};
+  )
+  };
+
 
 export default Login;
