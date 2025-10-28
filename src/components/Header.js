@@ -63,7 +63,6 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
           {/*  Avatar for visible UI */}
           <Avatar src="avatar.png" alt={username} data-testid="avatar" />
 
-          {/*  Hidden image for test looking for alt="register" */}
           <img
             src="avatar.png"
             alt="register"
