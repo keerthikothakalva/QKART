@@ -3,11 +3,10 @@ import { Avatar, Button, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
 import "./Header.css";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Header = ({ children, hasHiddenAuthButtons }) => {
   const history = useHistory();
-  const location = useLocation();
 
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
@@ -61,7 +60,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
       {/* Logged-in User */}
       {username && token ? (
         <Stack direction="row" spacing={2} alignItems="center">
-          <Avatar src="https://i.pravatar.cc/150?u=crio.do" alt="register" />
+          <Avatar src="avatar.png" alt="register" />
           <Box className="username-text">{username}</Box>
           <Button
             color="primary"
@@ -75,16 +74,10 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
       ) : (
         // Logged-out state
         <Stack direction="row" spacing={2}>
-          <Button
-            variant="text"
-            onClick={() => history.push("/login")}
-          >
+          <Button variant="text" onClick={() => history.push("/login")}>
             Login
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => history.push("/register")}
-          >
+          <Button variant="contained" onClick={() => history.push("/register")}>
             Register
           </Button>
         </Stack>
