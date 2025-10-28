@@ -60,7 +60,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
       {/* Logged-in User */}
       {username && token ? (
         <Stack direction="row" spacing={2} alignItems="center">
-          <Avatar src="avatar.png" alt="register" />
+          <Avatar src="avatar.png" alt="avatar" />
           <Box className="username-text">{username}</Box>
           <Button
             color="primary"
