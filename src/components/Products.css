@@ -1,8 +1,9 @@
-.search-box{
+.search-box {
   margin: 1rem 0;
   padding: 0 1rem;
 }
-  .search{
+
+.search {
   min-width: 24rem;
   position: relative;
   left: 4rem;
@@ -19,10 +20,6 @@
   align-items: center;
 }
 
-.product-grid {
-  width: 100%;
-}
-
 .hero-heading {
   color: #fff;
   font-size: 1.5rem;
@@ -37,6 +34,10 @@
   background: #ffb825;
   border-radius: 5px;
   padding: 0.2rem;
+}
+
+.product-grid {
+  width: 100%;
 }
 
 .loading {
@@ -56,20 +57,31 @@
   display: none !important;
 }
 
+.no-products {
+  text-align: center;
+  font-size: 1rem;
+  color: #777;
+  padding: 2rem;
+  width: 100%;
+}
+
 @media screen and (min-width: 768px) {
   .hero {
     justify-content: flex-end;
     height: 20rem;
     padding-right: 8rem;
   }
+
   .hero-heading {
     position: static;
     font-size: 3rem;
     width: 50%;
   }
+
   .search-mobile {
     display: none !important;
   }
+
   .search-desktop {
     display: block !important;
   }

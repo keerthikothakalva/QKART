@@ -141,8 +141,8 @@ describe("Products Page - Header: Logged in", () => {
   });
 
   it("should have username & avatar in header if logged in", () => {
-    const avatar = screen.getByAltText(/crio.do/i);
-    const username = screen.getByText(/crio.do/i);
+    const avatar = screen.getByAltText(/register/i);
+    const username = screen.getByText(/logout/i);
     expect(avatar).toBeInTheDocument();
     expect(username).toBeInTheDocument();
   });

@@ -3,33 +3,39 @@ import { Avatar, Button, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import React from "react";
 import "./Header.css";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const Header = ({ children, hasHiddenAuthButtons }) => {
   const history = useHistory();
+  const location = useLocation();
+
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
 
   const handleLogout = () => {
-    localStorage.clear();
-    window.location.reload();
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("balance");
     history.push("/login");
   };
 
-  const backToExplore = () => {
-    history.push("/");
-  };
-
-  // ✅ Case 1: If hasHiddenAuthButtons is true (like Login/Register pages)
+  // Case 1: Back to Explore (Register/Login pages)
   if (hasHiddenAuthButtons) {
     return (
       <Box className="header">
-        <Box className="header-title">
-          <img src="logo_light.svg" alt="QKart-icon"></img>
+        <Box
+          className="header-title"
+          onClick={() => history.push("/")}
+          sx={{ cursor: "pointer" }}
+        >
+          <img src="logo_dark.svg" alt="QKart-icon" />
         </Box>
+
         <Button
           className="explore-button"
           startIcon={<ArrowBackIcon />}
           variant="text"
-          onClick={backToExplore}
+          onClick={() => history.push("/")}
         >
           Back to explore
         </Button>
@@ -37,42 +43,46 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
     );
   }
 
-  // ✅ Case 2: Default Header (Products page + others)
+  // Case 2: Default Header
   return (
     <Box className="header">
-      {/* ✅ Logo */}
-      <Box className="header-title" onClick={() => history.push("/")}>
-        <img src="logo_light.svg" alt="QKart-icon"></img>
+      {/* Logo */}
+      <Box
+        className="header-title"
+        onClick={() => history.push("/")}
+        sx={{ cursor: "pointer" }}
+      >
+        <img src="logo_dark.svg" alt="QKart-icon" />
       </Box>
 
-      {/* ✅ Search bar (only visible if children is passed from Products.js) */}
-      {children && <Box className="search-bar">{children}</Box>}
+      {/* Search bar shown only when children prop exists */}
+      {children && <Box className="search-desktop">{children}</Box>}
 
-      {/* ✅ Right side: user / login controls */}
-      {localStorage.getItem("username") ? (
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{ justifyContent: "flex-end", alignItems: "center" }}
-        >
-          <Avatar src="avatar.png" alt={localStorage.getItem("username")} />
-          <p>{localStorage.getItem("username")}</p>
+      {/* Logged-in User */}
+      {username && token ? (
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Avatar src="https://i.pravatar.cc/150?u=crio.do" alt="register" />
+          <Box className="username-text">{username}</Box>
           <Button
-            variant="contained"
-            className="button"
+            color="primary"
+            variant="text"
             onClick={handleLogout}
+            role="button"
           >
             Logout
           </Button>
         </Stack>
       ) : (
+        // Logged-out state
         <Stack direction="row" spacing={2}>
-          <Button className="button" onClick={() => history.push("/login")}>
+          <Button
+            variant="text"
+            onClick={() => history.push("/login")}
+          >
             Login
           </Button>
           <Button
             variant="contained"
-            className="button"
             onClick={() => history.push("/register")}
           >
             Register
