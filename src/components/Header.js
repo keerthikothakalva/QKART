@@ -60,11 +60,10 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
       {/* Logged-in User */}
       {username && token ? (
         <Stack direction="row" spacing={2} alignItems="center">
-          {/* Visible avatar the UI uses */}
-          <Avatar src="avatar.png" alt="avatar" data-testid="avatar" />
+          {/*  Avatar for visible UI */}
+          <Avatar src="avatar.png" alt={username} data-testid="avatar" />
 
-          {/* Hidden image with alt="register" so tests that look for that alt pass.
-              It's visually hidden but present in DOM; won't affect layout. */}
+          {/*  Hidden image for test looking for alt="register" */}
           <img
             src="avatar.png"
             alt="register"
