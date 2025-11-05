@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import Products from "./components/Products";
 
 export const config = {
-  endpoint: "https://qkart-frontend-v9e4.onrender.com/api/v1",
+  endpoint: "https://qkart-frontend-oru5.onrender.com/api/v1",
 };
 
 function App() {
