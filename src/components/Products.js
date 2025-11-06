@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import {
   Box,
   Grid,
@@ -225,7 +225,7 @@ const Products = () => {
           />
         </Grid>
       </Grid>
-    </div>
+    </div> 
   );
 };
 
