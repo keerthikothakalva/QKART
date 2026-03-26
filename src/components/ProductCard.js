@@ -26,7 +26,8 @@ const ProductCard = ({ product, handleAddToCart }) => {
           <Rating name="read-only" value={product.rating} readOnly />
         </Stack>
       </CardContent>
-      <CardActions>
+      <CardActions className="card-actions">
+        
         <Button
           className="card-button"
           variant="contained"

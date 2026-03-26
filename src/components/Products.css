@@ -15,25 +15,26 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 10rem;
+
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center; 
+  padding: 0 1rem;
 }
 
 .hero-heading {
   color: #fff;
   font-size: 1.5rem;
-  width: 80%;
-  position: relative;
-  left: 1rem;
+  width: 90%;
+  text-align: center; 
 }
 
 .hero-highlight {
   color: #212121;
   font-weight: 700;
   background: #ffb825;
-  border-radius: 5px;
-  padding: 0.2rem;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
 }
 
 .product-grid {
@@ -41,14 +42,14 @@
 }
 
 .loading {
+  width: 100%;
+  height: 60vh;             
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 50vh;
+  align-items: center;
+  color: #3c3c3c;
 }
-
 .search-mobile {
   display: block !important;
 }
@@ -64,18 +65,31 @@
   padding: 2rem;
   width: 100%;
 }
+.footer {
+  margin-top: 3rem;
+  padding: 2rem 1rem;
+  background-color: #0f172a;
+  text-align: center;
+}
+
+.footer .MuiTypography-root {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
 
 @media screen and (min-width: 768px) {
-  .hero {
-    justify-content: flex-end;
-    height: 20rem;
-    padding-right: 8rem;
-  }
-
-  .hero-heading {
-    position: static;
-    font-size: 3rem;
-    width: 50%;
+    .hero {
+      height: 20rem;
+      justify-content: flex-end; 
+      padding-right: 6rem; 
+    }
+  
+    .hero-heading {
+      font-size: 3rem;
+      width: 40%;
+      text-align: left; 
+    }
   }
 
   .search-mobile {
@@ -85,4 +99,4 @@
   .search-desktop {
     display: block !important;
   }
-}
+

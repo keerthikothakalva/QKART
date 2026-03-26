@@ -10,47 +10,43 @@
   background-color: #fff;
 }
 
+  
 .card:hover {
-  transform: scale(1.03);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px); 
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
+.card-media {
+  height: 200px;
+  object-fit: contain;
+  padding: 10px;
+}
+
+/* text styling */
+.product-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.product-cost {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+}
+
+/* button section */
 .card-actions {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 0 16px 16px;
 }
 
 .card-button {
   text-transform: none;
   font-weight: 600;
   width: 100%;
+  background-color: #2e7d32 !important; 
 }
 
-.card img {
-  width: 100%;
-  height: 200px;
-  object-fit: contain;
-  padding: 10px;
-}
-
-/*  Responsive layout adjustments */
-@media (max-width: 768px) {
-  .card {
-    width: 90%;
-    margin: 10px auto;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .card {
-    width: 45%;
-  }
-}
-
-@media (min-width: 1025px) {
-  .card {
-    width: 22%;
-  }
+.card-button:hover {
+  background-color: #1b5e20 !important;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -10,7 +10,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import axios from "axios";
-import ProductCard from "./ProductCard";
+import ProductCard from "../components/ProductCard";
 import Cart, { generateCartItemsFrom } from "./Cart";
 import Header from "./Header";
 import { config } from "../App";
@@ -45,7 +45,10 @@ export const addToCart = async (
     return;
   }
 
-  const existingItem = (items || []).find((item) => item.productId === productId);
+  const existingItem = (items || []).find(
+    (item) => item.productId === productId
+  );
+
   if (preventDuplicate && existingItem) {
     const alertBox = document.createElement("div");
     alertBox.setAttribute("role", "alert");
@@ -62,6 +65,7 @@ export const addToCart = async (
       { productId, qty },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+
     const cartData = generateCartItemsFrom(res.data, products);
     setCartItems(cartData);
   } catch (e) {
@@ -69,7 +73,7 @@ export const addToCart = async (
   }
 };
 
-// ------------------ Main Products Component ------------------
+// ------------------ Main Component ------------------
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -79,14 +83,19 @@ const Products = () => {
 
   const token = localStorage.getItem("token");
 
-  // ------------------ Fetch Products on Load ------------------
+  // ------------------ Fetch Products ------------------
   const performAPICall = async () => {
+    setLoading(true);
+    await Promise.resolve();
+
     try {
-      setLoading(true);
       const res = await axios.get(`${config.endpoint}/products`);
-      setProducts(res.data);
-      setFiltered(res.data);
-      return res.data;
+      const data = res?.data || [];
+
+      setProducts(data);
+      setFiltered(data);
+
+      return data;
     } catch (e) {
       console.error("Error fetching products:", e);
       setFiltered([]);
@@ -97,22 +106,29 @@ const Products = () => {
   };
 
   useEffect(() => {
-    const loadProductsAndCart = async () => {
-      const productList = await performAPICall();
-      if (token) {
-        const cartData = await fetchCart(token);
-        setCartItems(generateCartItemsFrom(cartData, productList));
+    const load = async () => {
+      try {
+        const productList = await performAPICall();
+
+        if (token) {
+          const cartData = await fetchCart(token);
+          setCartItems(generateCartItemsFrom(cartData, productList));
+        }
+      } catch (err) {
+        console.error(err);
       }
     };
-    loadProductsAndCart();
+
+    load();
   }, [token]);
 
-  // ------------------ Search Functionality ------------------
+  // ------------------ Search ------------------
   const performSearch = async (text) => {
     if (!text) {
       setFiltered(products);
       return;
     }
+
     try {
       const res = await axios.get(
         `${config.endpoint}/products/search?value=${text}`
@@ -122,12 +138,12 @@ const Products = () => {
       if (e.response && e.response.status === 404) {
         setFiltered([]);
       } else {
-        console.error("Error in search:", e);
+        console.error("Search error:", e);
       }
     }
   };
 
-  // ------------------ Debouncing ------------------
+  // ------------------ Debounce ------------------
   const debounceSearch = (event, debounceTimeout) => {
     const value = event.target.value;
 
@@ -150,15 +166,18 @@ const Products = () => {
     addToCart(token, cartItems, products, productId, qty, setCartItems);
   };
 
-  // ------------------ UI Render ------------------
+  // ------------------ UI ------------------
   return (
     <div>
-      {/*  Header with search bar as children */}
+      
       <Header>
         <TextField
           className="search-desktop"
           size="small"
           fullWidth
+          placeholder="Search for items/categories"
+          name="search"
+          onChange={(e) => debounceSearch(e, debounceTimeout)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -166,17 +185,26 @@ const Products = () => {
               </InputAdornment>
             ),
           }}
-          placeholder="Search for items/categories"
-          name="search"
-          onChange={(e) => debounceSearch(e, debounceTimeout)}
+
         />
       </Header>
-
-      {/*  Search box for mobile */}
+  
+      
+      <Box className="hero">
+        <Typography className="hero-heading">
+          India’s{" "}
+          <span className="hero-highlight">FASTEST DELIVERY</span> to your door step
+        </Typography>
+      </Box>
+  
+      
       <TextField
         className="search-mobile"
         size="small"
         fullWidth
+        placeholder="Search for items/categories"
+        name="search"
+        onChange={(e) => debounceSearch(e, debounceTimeout)}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
@@ -184,26 +212,26 @@ const Products = () => {
             </InputAdornment>
           ),
         }}
-        placeholder="Search for items/categories"
-        name="search"
-        onChange={(e) => debounceSearch(e, debounceTimeout)}
+
       />
 
-      {/*  Products Grid */}
+
       <Grid container>
         <Grid item xs={12} md={9} className="product-grid">
-          {loading ? (
-            <Box className="loading">
-              <CircularProgress />
-              <Typography>Loading Products...</Typography>
-            </Box>
-          ) : filtered.length > 0 ? (
-            <Grid container spacing={2}>
+        {loading ? (
+  <Box className="loading">
+    <CircularProgress size={50} thickness={4} />
+    <Typography variant="h6" sx={{ mt: 2 }}>
+      Loading Products...
+    </Typography>
+  </Box>
+) : filtered.length > 0 ? (
+            <Grid container spacing={3}>
               {filtered.map((product) => (
-                <Grid item xs={6} md={3} key={product._id}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
                   <ProductCard
                     product={product}
-                    handleAddToCart={() => handleAddToCart(product)}
+                    handleAddToCart={handleAddToCart}
                   />
                 </Grid>
               ))}
@@ -215,8 +243,8 @@ const Products = () => {
             </Box>
           )}
         </Grid>
-
-        {/*  Cart Section */}
+  
+        
         <Grid item xs={12} md={3} bgcolor="#f5f5f5">
           <Cart
             products={products}
@@ -224,8 +252,14 @@ const Products = () => {
             handleQuantity={handleQuantity}
           />
         </Grid>
+  
       </Grid>
-    </div> 
+  
+     
+      <Box className="footer">
+        <Typography>© 2026 QKart. All rights reserved.</Typography>
+      </Box>
+    </div>
   );
 };
 

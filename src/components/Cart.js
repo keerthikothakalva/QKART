@@ -36,7 +36,7 @@ export const getTotalCartValue = (items = []) => {
  */
 const ItemQuantity = ({ value, handleAdd, handleDelete, isReadOnly }) => {
   if (isReadOnly) {
-    // Show plain quantity (no buttons)
+    
     return (
       <Box padding="0.5rem" data-testid="item-qty">
         Qty: {value}
