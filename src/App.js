@@ -7,7 +7,7 @@ import Checkout from "./components/Checkout";
 import Thanks from "./components/Thanks";
 
 export const config = {
-  endpoint: "http://13.235.83.176:8082/api/v1"
+  endpoint: "http://13.233.105.202:8082/api/v1"
 };
 
 function App() {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef  } from "react";
 import {
   Box,
   Grid,
@@ -79,7 +79,7 @@ const Products = () => {
   const [filtered, setFiltered] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [debounceTimeout, setDebounceTimeout] = useState(null);
+  
 
   const token = localStorage.getItem("token");
 
@@ -124,36 +124,45 @@ const Products = () => {
 
   // ------------------ Search ------------------
   const performSearch = async (text) => {
-    if (!text) {
-      setFiltered(products);
-      return;
-    }
-
+    setLoading(true); 
+  
     try {
-      const res = await axios.get(
-        `${config.endpoint}/products/search?value=${text}`
-      );
-      setFiltered(res.data);
-    } catch (e) {
-      if (e.response && e.response.status === 404) {
-        setFiltered([]);
+      if (!text) {
+        setFiltered(products);
       } else {
-        console.error("Search error:", e);
+        const res = await axios.get(
+          `${config.endpoint}/products/search?value=${text}`
+        );
+        setFiltered(res.data);
       }
+    } catch (e) {
+      
+      setFiltered([]);
+
     }
+  
+    setLoading(false); 
   };
 
   // ------------------ Debounce ------------------
-  const debounceSearch = (event, debounceTimeout) => {
-    const value = event.target.value;
+  const debounceRef = useRef(null);
 
-    if (debounceTimeout) clearTimeout(debounceTimeout);
-
-    const timeout = setTimeout(() => {
-      performSearch(value);
+  const handleSearch = (e) => {
+    const value = e.target.value; 
+  
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+  
+    debounceRef.current = setTimeout(() => {
+      if (value && value.trim() !== "") {
+        performSearch(value);
+      } else {
+        performAPICall();
+      }
     }, 500);
 
-    setDebounceTimeout(timeout);
+
   };
 
   // ------------------ Cart Handlers ------------------
@@ -177,7 +186,7 @@ const Products = () => {
           fullWidth
           placeholder="Search for items/categories"
           name="search"
-          onChange={(e) => debounceSearch(e, debounceTimeout)}
+          onChange={handleSearch}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -204,7 +213,7 @@ const Products = () => {
         fullWidth
         placeholder="Search for items/categories"
         name="search"
-        onChange={(e) => debounceSearch(e, debounceTimeout)}
+        onChange={handleSearch}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
@@ -219,13 +228,11 @@ const Products = () => {
       <Grid container>
         <Grid item xs={12} md={9} className="product-grid">
         {loading ? (
-  <Box className="loading">
-    <CircularProgress size={50} thickness={4} />
-    <Typography variant="h6" sx={{ mt: 2 }}>
-      Loading Products...
-    </Typography>
-  </Box>
-) : filtered.length > 0 ? (
+  <Box className="loading" data-testid="loading">
+  <CircularProgress />
+  <Typography>Loading...</Typography>
+</Box>
+)  : filtered.length > 0 ? (
             <Grid container spacing={3}>
               {filtered.map((product) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={product._id}>
@@ -246,11 +253,13 @@ const Products = () => {
   
         
         <Grid item xs={12} md={3} bgcolor="#f5f5f5">
-          <Cart
-            products={products}
-            items={cartItems}
-            handleQuantity={handleQuantity}
-          />
+        {!loading && (
+  <Cart
+    products={products}
+    items={cartItems}
+    handleQuantity={handleQuantity}
+  />
+)}
         </Grid>
   
       </Grid>

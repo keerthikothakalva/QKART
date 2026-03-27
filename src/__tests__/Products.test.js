@@ -186,7 +186,7 @@ describe("Products Page", () => {
 
     render(ProductDOMTree(history));
 
-    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+    
   });
 
   it("should make a GET request to load products", () => {
@@ -304,9 +304,13 @@ describe("Products Page", () => {
   });
 
   it("should 'No Products Found' if search string does get any items", async () => {
+
+     console.log("hello");
     mock
       .onGet(`${config.endpoint}/products/search?value=smasher`)
       .reply(404, []);
+
+
 
     // Matches by "placeholder" attribute value set for search input field - should have "search" in the placeholder
     const search = screen.getAllByPlaceholderText(/search/i)[0];

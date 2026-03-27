@@ -28,15 +28,14 @@ const ProductCard = ({ product, handleAddToCart }) => {
       </CardContent>
       <CardActions className="card-actions">
         
-        <Button
-          className="card-button"
-          variant="contained"
-          fullWidth
-          startIcon={<AddShoppingCartIcon />}
-          onClick={() => handleAddToCart(product)}
-        >
-          ADD TO CART
-        </Button>
+      <Button
+  className="card-button"
+  variant="contained"
+  fullWidth
+  onClick={() => handleAddToCart(product)}
+>
+  ADD TO CART
+</Button>
       </CardActions>
     </Card>
   );
